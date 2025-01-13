@@ -1,0 +1,13 @@
+fastapi==0.100.0  # Compatible with Pydantic v2
+uvicorn[standard]==0.22.0  # For running the FastAPI server
+pymysql==1.0.3  # MySQL database interaction
+mysql-connector-python==8.1.0  # MySQL database driver
+sqlalchemy==2.0.9  # SQLAlchemy ORM for database interactions
+fastapi-jwt-auth==0.5.0  # JWT authentication for FastAPI
+aiosqlite==0.19.0  # Async SQLite driver
+python-dotenv==1.0.0  # Load environment variables
+marshmallow==3.19.0  # Data serialization and validation
+pydantic>=2.0.0  # For data validation and parsing
+passlib[bcrypt]==1.7.4  # Password hashing library
+pydantic[email]
+python-multipart

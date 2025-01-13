@@ -1,5 +1,15 @@
-from marshmallow import Schema, fields
+from pydantic import BaseModel
+class AuthSchema(BaseModel):
+    username: str
+    password: str
 
-class RegisterSchema(Schema):
-    username = fields.Str(required=True)
-    password = fields.Str(required=True)
+    model_config = {
+        "json_schema_extra": {
+            "examples": [
+                {
+                    "username": "test_user",
+                    "password": "secure_password"
+                }
+            ]
+        }
+    }

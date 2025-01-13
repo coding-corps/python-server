@@ -7,3 +7,4 @@ def get_daily_recipe(user_id):
 def search_recipes(query):
     # Query the database for recipes with the search term
     pass
+s

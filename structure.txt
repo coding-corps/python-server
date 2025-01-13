@@ -1,0 +1,68 @@
+.
+├── Dockerfile
+├── README.md
+├── app
+│   ├── __init__.py
+│   ├── __pycache__
+│   │   ├── __init__.cpython-310.pyc
+│   │   └── extensions.cpython-310.pyc
+│   ├── config
+│   │   ├── __init__.py
+│   │   ├── __pycache__
+│   │   │   ├── __init__.cpython-310.pyc
+│   │   │   └── settings.cpython-310.pyc
+│   │   ├── database.py
+│   │   └── settings.py
+│   ├── controllers
+│   │   ├── __init__.py
+│   │   ├── auth_controller.py
+│   │   ├── healthcheck.py
+│   │   ├── profile_controller.py
+│   │   ├── recipie_controller.py
+│   │   └── user_controller.py
+│   ├── extensions.py
+│   ├── main.py
+│   ├── middlewares
+│   │   ├── __init__.py
+│   │   ├── auth_middleware.py
+│   │   └── error_middleware.py
+│   ├── models
+│   │   ├── __init__.py
+│   │   ├── base_model.py
+│   │   ├── product_model.py
+│   │   ├── recipe_model.py
+│   │   └── user_model.py
+│   ├── routes
+│   │   ├── __init__.py
+│   │   ├── auth_routes.py
+│   │   ├── recipe_routes.py
+│   │   └── user_routes.py
+│   ├── schemas
+│   │   ├── __init__.py
+│   │   ├── auth_schema.py
+│   │   ├── recipe_schema.py
+│   │   └── user_schema.py
+│   ├── services
+│   │   ├── __init__.py
+│   │   ├── auth_service.py
+│   │   ├── recipe_service.py
+│   │   └── user_service.py
+│   └── utils
+│       ├── __init__.py
+│       ├── hash.py
+│       ├── logger.py
+│       └── validators.py
+├── docker-compose.yml
+├── migrations
+│   ├── env.py
+│   └── versions
+├── pyproject.toml
+├── requirements.txt
+├── structure.txt
+└── tests
+    ├── __init__.py
+    ├── conftest.py
+    ├── integration
+    └── unit
+
+17 directories, 49 files

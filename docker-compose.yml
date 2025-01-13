@@ -1,0 +1,42 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      MYSQL_HOST: mysql
+      MYSQL_USER: root
+      MYSQL_PASSWORD: password
+      MYSQL_DB: cooking_compass
+    depends_on:
+      mysql:
+        condition: service_healthy  # Wait for MySQL to be healthy before starting
+    networks:
+      - cooking_compass_net
+    restart: always  # Automatically restart the app if it crashes
+
+  mysql:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: cooking_compass
+    volumes:
+      - mysql-data:/var/lib/mysql
+    networks:
+      - cooking_compass_net
+    healthcheck:  # Ensures MySQL is ready before the app starts
+      test: ["CMD", "mysqladmin", "ping", "--silent"]
+      interval: 10s
+      retries: 5
+      timeout: 5s
+    restart: always  # Automatically restart MySQL if it crashes
+
+networks:
+  cooking_compass_net:
+    driver: bridge
+
+volumes:
+  mysql-data:
+    driver: local
