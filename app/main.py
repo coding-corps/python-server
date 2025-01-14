@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from app.routes import user_routes, auth_routes
 from app.controllers.healthcheck import healthcheck
-# from app.config.database import init_db
+from app.config.database import init_db
 # from app.middlewares.auth_middleware import AuthMiddleware
 # from app.utils.logger import setup_logging
 from app.config.settings import Settings
@@ -16,17 +16,15 @@ app = FastAPI()
 
 # Include routers
 app.include_router(auth_routes, prefix="/auth", tags=["Authentication"])
-# app.include_router(recipe_routes.router, prefix="/recipes", tags=["Recipes"])
 app.include_router(user_routes, prefix="/users", tags=["Users"])
 
-# Add healthcheck route
 app.add_api_route("/health", healthcheck, methods=["GET"],tags=["Health"] )
 
 # Initialize database
 @app.on_event("startup")
 async def on_startup():
     print("starting up")
-    # await init_db()
+    await init_db()
 
 # Add middleware
 # app.add_middleware(AuthMiddleware)

@@ -7,19 +7,23 @@ load_dotenv()
 class Settings:
     app_name: str = "Cooking Compass"
     debug: bool = True
-    database_url: str = os.getenv("DATABASE_URL", "mysql+pymysql://root:password@db:3306/cooking_compass")
     secret_key: str = os.getenv("SECRET_KEY", "your_secret_key")
-    jwt_secret_key: str = os.getenv("JWT_SECRET_KEY", "jwt_secret_key")
+    jwt_secret_key: str = os.getenv("JWT_SECRET_KEY", "your_jwt_secret_key")
     algorithm: str = os.getenv("ALGORITHM", "HS256")
     access_token_expire_minutes: int = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES", 30))
 
     # MySQL settings
-    mysql_root_password: str = os.getenv("MYSQL_ROOT_PASSWORD", "password")
-    mysql_database: str = os.getenv("MYSQL_DATABASE", "cooking_compass")
+    mysql_host: str = os.getenv("MYSQL_HOST", "localhost")
+    mysql_user: str = os.getenv("MYSQL_USER", "user")
+    mysql_password: str = os.getenv("MYSQL_PASSWORD", "yourpassword")
+    mysql_database: str = os.getenv("MYSQL_DATABASE", "yourdatabase")
 
     class Config:
         env_file = ".env"
 
+    def get_db_url(self):
+        DATABASE_URL = f"mysql+pymysql://{self.mysql_user}:{self.mysql_password}@{self.mysql_host}/{self.mysql_database}"
+        return DATABASE_URL
+
 # Instantiate settings object 
 settings = Settings()
-
