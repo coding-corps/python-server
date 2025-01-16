@@ -22,9 +22,9 @@ app.add_api_route("/health", healthcheck, methods=["GET"],tags=["Health"] )
 
 # Initialize database
 @app.on_event("startup")
-async def on_startup():
+def on_startup():
     print("starting up")
-    await init_db()
+    init_db()
 
 # Add middleware
 # app.add_middleware(AuthMiddleware)

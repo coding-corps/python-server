@@ -23,8 +23,8 @@ class User(Base):  # Assuming Base is already declared
     updated_at = Column(DateTime, default=func.now(), onupdate=func.now())  # Timestamp for last update
     last_login_at = Column(DateTime, nullable=True)  # Timestamp for the last login
 
-    role_id = Column(Integer, ForeignKey("roles.id"), nullable=False)
-    role = relationship("Role", back_populates="users")
+    # role_id = Column(Integer, ForeignKey("roles.id"), nullable=False)
+    # role = relationship("Role", back_populates="users")
 
     def set_password(self, password: str):
         self.hashed_password = pwd_context.hash(password)  # Hash the password before storing

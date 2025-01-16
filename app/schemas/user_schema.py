@@ -10,11 +10,19 @@ class User(BaseModel):
 class UserInDB(User):
     hashed_password: str
 
-    
-class UserCreateSchema(BaseModel):
-    username: str  
-    password: str 
-    email: str 
+
+class UserCreate(BaseModel):
+    username: str
+    email: EmailStr
+    password: str
+
+class UserResponse(BaseModel):
+    id: int
+    username: str
+    email: str
+
+    class Config:
+        orm_mode = True
 
 
 class UserUpdatePasswordSchema(BaseModel):

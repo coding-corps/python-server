@@ -7,6 +7,7 @@ from .settings import settings  # Import settings object
 # Construct the DATABASE_URL dynamically using the settings object
 DATABASE_URL = settings.get_db_url()
 
+
 # Create the SQLAlchemy engine
 engine = create_engine(DATABASE_URL, echo=True)
 
@@ -30,8 +31,16 @@ def init_db():
     Initializes the database by creating tables based on the models.
     This function will create all tables that have been defined using the Base class.
     """
-    # Import all models here to ensure they are registered with the metadata
+    try:
+        # Print the database connection URL (ensure this doesn't expose sensitive data in production)
+        print(f"Connecting to database at: {DATABASE_URL}")
 
-    # Create all tables based on the Base metadata
-    Base.metadata.create_all(bind=engine)
-    print("Database tables created successfully.")
+        # Import all models here to ensure they are registered with the Base metadata
+        # If you have multiple model files, ensure they're imported before calling create_all()
+
+        # Create all tables based on the Base metadata
+        Base.metadata.create_all(bind=engine)
+
+        print("Database tables created successfully.")
+    except Exception as e:
+        print(f"An error occurred while initializing the database: {e}")

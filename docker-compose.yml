@@ -6,37 +6,40 @@ services:
     ports:
       - "8000:8000"
     environment:
-      MYSQL_HOST: mysql  # Reference the MySQL service name as the host
+      MYSQL_HOST: mysql                 # Use the MySQL service name directly as the hostname
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
       MYSQL_DB: ${MYSQL_DB}
+      MYSQL_PORT: 3306                  # Use the internal MySQL port (3306)
       FLASK_ENV: ${FLASK_ENV}
-      DATABASE_URL: ${DATABASE_URL}
       SECRET_KEY: ${SECRET_KEY}
       JWT_SECRET_KEY: ${JWT_SECRET_KEY}
     depends_on:
       - mysql
     networks:
       - cooking_compass_net
-    restart: always  # Automatically restart the app if it crashes
+    restart: always                     # Automatically restart the app if it crashes
 
   mysql:
     image: mysql:5.7
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_PASSWORD}  # Root password
-      MYSQL_DATABASE: ${MYSQL_DB}            # The database that will be created
-      MYSQL_USER: ${MYSQL_USER}              # The username to create
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD}      # The password for the created user
+      MYSQL_DATABASE: ${MYSQL_DB}             # The database that will be created
+      MYSQL_USER: ${MYSQL_USER}               # The username to create
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}       # The password for the created user
     ports:
-      - "3307:3306"  # Map MySQL container's 3306 to host's 3307
+      - "3307:3306"                           # Map MySQL container's port 3306 to host port 3307
     volumes:
-      - mysql-data:/var/lib/mysql  # Persist MySQL data
+      - mysql-data:/var/lib/mysql             # Persist MySQL data
     restart: always
     healthcheck:
       test: ["CMD-SHELL", "mysqladmin ping -h localhost -u${MYSQL_USER} --password=${MYSQL_PASSWORD} || exit 1"]
       interval: 10s
       timeout: 5s
       retries: 3
+    networks:
+      - cooking_compass_net
+
 networks:
   cooking_compass_net:
     driver: bridge
