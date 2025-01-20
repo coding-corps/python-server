@@ -29,8 +29,6 @@ services:
     scaling:
       minInstances: 1  # Limit to 1 instance for the free tier
       maxInstances: 1  # Limit to 1 instance for the free tier
-    regions:
-      - oregon  # Or any other region of your choice
 
   # MySQL database service (free tier)
   - type: pserv
