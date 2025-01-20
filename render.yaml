@@ -1,11 +1,11 @@
-# Define services for your app and MySQL database
+# Define the services for the Flask app and MySQL database
 services:
-  # Web service for Flask app
+  # Web service for Flask app (running Docker)
   - type: web
     name: my-flask-app
     runtime: docker
     dockerfilePath: Dockerfile  # Path to your Dockerfile
-    buildCommand: ""  # Render will use Dockerfile for build
+    buildCommand: ""  # Render will use Dockerfile to build
     startCommand: "python app.py"  # Command to start the Flask app
     envVars:
       - key: MYSQL_HOST
@@ -24,11 +24,13 @@ services:
         value: ${SECRET_KEY}
       - key: JWT_SECRET_KEY
         value: ${JWT_SECRET_KEY}
-    plan: "free"  # Free tier for the Flask web service
+    plan: free  # Free tier for the Flask web service
+    autoDeploy: true  # Enable auto-deploy when changes are made
     scaling:
       minInstances: 1  # Limit to 1 instance for the free tier
       maxInstances: 1  # Limit to 1 instance for the free tier
-    autoDeploy: true  # Enable automatic deploys when changes are made
+    regions:
+      - oregon  # Or any other region of your choice
 
   # MySQL database service (free tier)
   - type: pserv
@@ -44,13 +46,6 @@ services:
         value: ${MYSQL_USER}  # MySQL user
       - key: MYSQL_PASSWORD
         value: ${MYSQL_PASSWORD}  # MySQL password
-    disk:
-      name: mysql-data  # Persistent disk for MySQL data
-      sizeGB: 1  # Small disk size for free tier
-    healthCheckPath: /  # Optional health check URL
     plan: free  # Use the free plan for MySQL
+    healthCheckPath: /  # Optional health check URL
 
-# Optional volumes for persistent storage
-volumes:
-  - name: mysql-data
-    driver: local  # Render-managed persistent disk
