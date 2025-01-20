@@ -8,7 +8,8 @@ services:
     buildCommand: ""  # Render will use Dockerfile to build
     scaling:
       minInstances: 1  # Fixed to 1 instance for the free tier
-      maxInstances: 1  # Fixed to 1 instance for the free tier
+      maxInstances: 2  # Max 2 instances for the free tier (scaling up to 2)
+      targetMemoryPercent: 60  # Scaling target memory percentage
     plan: free  # Free tier for the Flask web service
     autoDeploy: true  # Enable auto-deploy when changes are made
     envVars:
@@ -29,7 +30,7 @@ services:
       - key: JWT_SECRET_KEY
         value: ${JWT_SECRET_KEY}
 
-  # MySQL database service (free tier)
+  # Managed MySQL database service (free tier)
   - type: pserv
     name: mysql-db
     plan: free  # Use the free plan for MySQL
@@ -42,5 +43,3 @@ services:
         value: ${MYSQL_USER}  # MySQL user
       - key: MYSQL_PASSWORD
         value: ${MYSQL_PASSWORD}  # MySQL password
-
-# No need for explicit volumes section, Render will handle persistence for databases automatically
