@@ -2,6 +2,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 from .settings import settings  # Import settings object
+from app.models import *  # Import all models from the centralized module
 
 
 # Construct the DATABASE_URL dynamically using the settings object
