@@ -29,8 +29,8 @@ services:
       - key: JWT_SECRET_KEY
         value: ${JWT_SECRET_KEY}
 
-  # Managed MySQL database (Render-provided)
-  - type: database
+  # MySQL managed database service on Render
+  - type: pserv
     name: mysql-db
     plan: free  # Free tier for MySQL database
     envVars:
