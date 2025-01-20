@@ -6,7 +6,7 @@ services:
     buildCommand: ""
     startCommand: "python app.py"
     environment:
-      MYSQL_HOST: mysql
+      MYSQL_HOST: mysql  # Referencing MySQL database as an environment variable
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
       MYSQL_DB: ${MYSQL_DB}
@@ -18,28 +18,7 @@ services:
     regions:
       - oregon
 
-  - type: database
-    name: mysql-database
-    engine: mysql
-    version: 5.7
-    plan: free  # Choose the plan that fits your needs
-    environment:
-      MYSQL_ROOT_PASSWORD: ${MYSQL_PASSWORD}
-      MYSQL_DATABASE: ${MYSQL_DB}
-      MYSQL_USER: ${MYSQL_USER}
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
-    healthCheck:
-      path: "/"
-      intervalSeconds: 60
-      timeoutSeconds: 10
-      maxAttempts: 3
-
-  - type: network
-    name: cooking_compass_net
-    subnets:
-      - cidr: 10.0.0.0/16
-
-# Optional: For MySQL persistent data
+# Optional: To manage persistence for your MySQL database on Render
 volumes:
   - name: mysql-data
     driver: local
