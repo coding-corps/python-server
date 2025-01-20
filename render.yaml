@@ -1,3 +1,6 @@
+previews:
+  generation: automatic # Enable preview environments
+
 services:
   # Flask app running in Docker
   - type: web
@@ -13,7 +16,7 @@ services:
     autoDeploy: true  # Enable auto-deploy when changes are made
     envVars:
       - key: MYSQL_HOST
-        value: mysql  # Hostname for the MySQL service
+        value: mysql-db  # Hostname for the MySQL service
       - key: MYSQL_USER
         value: ${MYSQL_USER}
       - key: MYSQL_PASSWORD
@@ -29,9 +32,9 @@ services:
       - key: JWT_SECRET_KEY
         value: ${JWT_SECRET_KEY}
 
-  # MySQL managed database service on Render
-  - type: pserv
-    name: mysql-db
+# Managed MySQL database (Render handles the database provisioning)
+databases:
+  - name: mysql-db
     plan: free  # Free tier for MySQL database
     envVars:
       - key: MYSQL_ROOT_PASSWORD
