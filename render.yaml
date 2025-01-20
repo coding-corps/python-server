@@ -1,47 +1,58 @@
+# Define services for your app and MySQL database
 services:
+  # Web service for Flask app
   - type: web
     name: my-flask-app
-    env: docker
-    dockerfilePath: Dockerfile
-    buildCommand: ""  # Render uses Dockerfile to build the image
-    startCommand: "python app.py"
+    runtime: docker
+    dockerfilePath: Dockerfile  # Path to your Dockerfile
+    buildCommand: ""  # Render will use Dockerfile for build
+    startCommand: "python app.py"  # Command to start the Flask app
     envVars:
       - key: MYSQL_HOST
-        value: mysql  # MySQL host is the service name for the MySQL database
+        value: mysql  # Use MySQL service name as hostname
       - key: MYSQL_USER
-        value: ${MYSQL_USER}  # Set your MySQL user
+        value: ${MYSQL_USER}
       - key: MYSQL_PASSWORD
-        value: ${MYSQL_PASSWORD}  # Set your MySQL password
+        value: ${MYSQL_PASSWORD}
       - key: MYSQL_DB
-        value: ${MYSQL_DB}  # Set your MySQL database name
+        value: ${MYSQL_DB}
       - key: MYSQL_PORT
-        value: 3306  # MySQL port
+        value: "3306"  # Internal MySQL port
       - key: FLASK_ENV
         value: ${FLASK_ENV}
       - key: SECRET_KEY
         value: ${SECRET_KEY}
       - key: JWT_SECRET_KEY
         value: ${JWT_SECRET_KEY}
-    instanceType: "small"  # You can change the instance size based on your needs
+    instanceType: "free"  # Free tier for the Flask web service
+    scaling:
+      minInstances: 1  # Limit to 1 instance for the free tier
+      maxInstances: 1  # Limit to 1 instance for the free tier
     regions:
-      - oregon
+      - oregon  # Or any other region of your choice
+    autoDeploy: true  # Enable automatic deploys when changes are made
 
-databases:
-  - name: mysql-db
-    engine: mysql
-    version: "5.7"
-    plan: free  # Choose your database plan (e.g., free, starter, etc.)
+  # MySQL database service (free tier)
+  - type: pserv
+    name: mysql-db
+    runtime: docker
+    repo: mysql:5.7  # Official MySQL image
     envVars:
       - key: MYSQL_ROOT_PASSWORD
-        value: ${MYSQL_PASSWORD}
+        value: ${MYSQL_PASSWORD}  # Set MySQL root password
       - key: MYSQL_DATABASE
-        value: ${MYSQL_DB}
+        value: ${MYSQL_DB}  # Database name
       - key: MYSQL_USER
-        value: ${MYSQL_USER}
+        value: ${MYSQL_USER}  # MySQL user
       - key: MYSQL_PASSWORD
-        value: ${MYSQL_PASSWORD}
+        value: ${MYSQL_PASSWORD}  # MySQL password
+    disk:
+      name: mysql-data  # Persistent disk for MySQL data
+      sizeGB: 1  # Small disk size for free tier
+    healthCheckPath: /  # Optional health check URL
+    plan: free  # Use the free plan for MySQL
 
-# Optional volumes if you want to define custom volumes (not required for managed databases)
+# Optional volumes for persistent storage
 volumes:
   - name: mysql-data
-    driver: local
+    driver: local  # Render-managed persistent disk
