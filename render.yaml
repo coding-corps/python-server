@@ -1,20 +1,19 @@
-# Define services for your Flask app and MySQL database
 services:
-  # Web service for Flask app (running Docker)
+  # Flask app running in Docker
   - type: web
     name: my-flask-app
     runtime: docker
     dockerfilePath: Dockerfile  # Path to your Dockerfile
     buildCommand: ""  # Render will use Dockerfile to build
     scaling:
-      minInstances: 1  # Fixed to 1 instance for the free tier
-      maxInstances: 2  # Max 2 instances for the free tier (scaling up to 2)
-      targetMemoryPercent: 60  # Scaling target memory percentage
+      minInstances: 1  # Minimum of 1 instance for the free tier
+      maxInstances: 2  # Maximum 2 instances (for scaling)
+      targetMemoryPercent: 60  # Memory scaling target
     plan: free  # Free tier for the Flask web service
     autoDeploy: true  # Enable auto-deploy when changes are made
     envVars:
       - key: MYSQL_HOST
-        value: mysql  # Use MySQL service name as hostname
+        value: mysql  # Hostname for the MySQL service
       - key: MYSQL_USER
         value: ${MYSQL_USER}
       - key: MYSQL_PASSWORD
@@ -22,7 +21,7 @@ services:
       - key: MYSQL_DB
         value: ${MYSQL_DB}
       - key: MYSQL_PORT
-        value: "3306"  # Internal MySQL port
+        value: "3306"  # Internal port for MySQL
       - key: FLASK_ENV
         value: ${FLASK_ENV}
       - key: SECRET_KEY
@@ -30,15 +29,15 @@ services:
       - key: JWT_SECRET_KEY
         value: ${JWT_SECRET_KEY}
 
-  # Managed MySQL database service (free tier)
+  # Managed MySQL database (Render-provided)
   - type: pserv
     name: mysql-db
-    plan: free  # Use the free plan for MySQL
+    plan: free  # Free tier for MySQL database
     envVars:
       - key: MYSQL_ROOT_PASSWORD
-        value: ${MYSQL_PASSWORD}  # Set MySQL root password
+        value: ${MYSQL_PASSWORD}  # MySQL root password
       - key: MYSQL_DATABASE
-        value: ${MYSQL_DB}  # Database name
+        value: ${MYSQL_DB}  # Name of the MySQL database
       - key: MYSQL_USER
         value: ${MYSQL_USER}  # MySQL user
       - key: MYSQL_PASSWORD
