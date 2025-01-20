@@ -9,8 +9,6 @@ services:
     scaling:
       minInstances: 1  # Fixed to 1 instance for the free tier
       maxInstances: 1  # Fixed to 1 instance for the free tier
-    regions:
-      - oregon  # Or any other region of your choice
     plan: free  # Free tier for the Flask web service
     autoDeploy: true  # Enable auto-deploy when changes are made
     envVars:
