@@ -3,22 +3,45 @@ services:
     name: my-flask-app
     env: docker
     dockerfilePath: Dockerfile
-    buildCommand: ""
+    buildCommand: ""  # Render uses Dockerfile to build the image
     startCommand: "python app.py"
-    environment:
-      MYSQL_HOST: mysql  # Referencing MySQL database as an environment variable
-      MYSQL_USER: ${MYSQL_USER}
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
-      MYSQL_DB: ${MYSQL_DB}
-      MYSQL_PORT: 3306
-      FLASK_ENV: ${FLASK_ENV}
-      SECRET_KEY: ${SECRET_KEY}
-      JWT_SECRET_KEY: ${JWT_SECRET_KEY}
-    instanceType: "small"  # Adjust based on your app's needs
+    envVars:
+      - key: MYSQL_HOST
+        value: mysql  # MySQL host is the service name for the MySQL database
+      - key: MYSQL_USER
+        value: ${MYSQL_USER}  # Set your MySQL user
+      - key: MYSQL_PASSWORD
+        value: ${MYSQL_PASSWORD}  # Set your MySQL password
+      - key: MYSQL_DB
+        value: ${MYSQL_DB}  # Set your MySQL database name
+      - key: MYSQL_PORT
+        value: 3306  # MySQL port
+      - key: FLASK_ENV
+        value: ${FLASK_ENV}
+      - key: SECRET_KEY
+        value: ${SECRET_KEY}
+      - key: JWT_SECRET_KEY
+        value: ${JWT_SECRET_KEY}
+    instanceType: "small"  # You can change the instance size based on your needs
     regions:
       - oregon
 
-# Optional: To manage persistence for your MySQL database on Render
+databases:
+  - name: mysql-db
+    engine: mysql
+    version: "5.7"
+    plan: free  # Choose your database plan (e.g., free, starter, etc.)
+    envVars:
+      - key: MYSQL_ROOT_PASSWORD
+        value: ${MYSQL_PASSWORD}
+      - key: MYSQL_DATABASE
+        value: ${MYSQL_DB}
+      - key: MYSQL_USER
+        value: ${MYSQL_USER}
+      - key: MYSQL_PASSWORD
+        value: ${MYSQL_PASSWORD}
+
+# Optional volumes if you want to define custom volumes (not required for managed databases)
 volumes:
   - name: mysql-data
     driver: local
