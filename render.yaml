@@ -24,12 +24,10 @@ services:
         value: ${SECRET_KEY}
       - key: JWT_SECRET_KEY
         value: ${JWT_SECRET_KEY}
-    instanceType: "free"  # Free tier for the Flask web service
+    plan: "free"  # Free tier for the Flask web service
     scaling:
       minInstances: 1  # Limit to 1 instance for the free tier
       maxInstances: 1  # Limit to 1 instance for the free tier
-    regions:
-      - oregon  # Or any other region of your choice
     autoDeploy: true  # Enable automatic deploys when changes are made
 
   # MySQL database service (free tier)
